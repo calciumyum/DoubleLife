@@ -12,14 +12,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -33,6 +32,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class BlockBannedItems implements Listener {
+
+    @EventHandler
+    public void discoverRecipes(PlayerJoinEvent event){
+        event.getPlayer().discoverRecipes(DoubleLife.recipeKeys);
+    }
 
     @EventHandler
     public void blockEnchantedGoldenApples(InventoryClickEvent event) {

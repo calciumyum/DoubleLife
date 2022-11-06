@@ -18,9 +18,9 @@ public class ConfigHandler {
         if (!configFile.exists()){
             configYaml.set("settings.gamerules.randomTickSpeed", 6);
             configYaml.set("settings.gamerules.spectatorsGenerateChunks", false);
-            configYaml.set("settings.gamerules.doWeatherCycle", false);
+            configYaml.set("settings.gamerules.doWeatherCycle", true);
             configYaml.set("settings.gamerules.doInsomnia", false);
-            configYaml.set("settings.gamerules.announceAdvancements", false);
+            configYaml.set("settings.gamerules.announceAdvancements", true);
             configYaml.set("settings.gamerules.playersSleepingPercentage", 100);
             configYaml.set("settings.gamerules.spawnRadius", 0);
 
@@ -34,9 +34,15 @@ public class ConfigHandler {
             configYaml.set("settings.enchanter.indestructible_on_drop", true);
             configYaml.set("settings.enchanter.nerf_enchantments", true);
 
+            configYaml.set("settings.recipes.craftable_saddle", true);
+            configYaml.set("settings.recipes.craftable_nametag", true);
+            configYaml.set("settings.recipes.paper_tnt", true);
+            configYaml.set("settings.recipes.craftable_sporeblossom", true);
+
             configYaml.set("settings.other.setSpawnPointAtDistributedLocation", false);
             configYaml.set("settings.other.banPlayersUponLosing", false);
             configYaml.set("settings.other.playExplosionSoundOnDeath", true);
+            configYaml.set("settings.other.killSoulmateOnJoinIfOfflineDuringDeath", false);
             configYaml.set("settings.other.borderSize", 700D);
         }
         save();

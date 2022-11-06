@@ -31,48 +31,56 @@ public final class DoubleLife extends JavaPlugin {
 
     public static JavaPlugin plugin;
 
-    public static Collection<NamespacedKey> keys;
+    public static Collection<NamespacedKey> recipeKeys;
 
     public void createRecipes(){
 
-        ItemStack saddle = new ItemStack(Material.SADDLE, 1);
-        NamespacedKey saddleKey = new NamespacedKey(plugin, "saddle");
-        ShapedRecipe saddleRecipe = new ShapedRecipe(saddleKey, saddle);
-        saddleRecipe.shape("LLL", " X ", "X X");
-        saddleRecipe.setIngredient('X', Material.LEATHER);
-        Bukkit.addRecipe(saddleRecipe);
-        keys.add(saddleKey);
+        if (ConfigHandler.configYaml.getBoolean("settings.recipes.craftable_saddle")) {
+            ItemStack saddle = new ItemStack(Material.SADDLE, 1);
+            NamespacedKey saddleKey = new NamespacedKey(plugin, "saddle");
+            ShapedRecipe saddleRecipe = new ShapedRecipe(saddleKey, saddle);
+            saddleRecipe.shape("LLL", " X ", "X X");
+            saddleRecipe.setIngredient('X', Material.LEATHER);
+            Bukkit.addRecipe(saddleRecipe);
+            recipeKeys.add(saddleKey);
+        }
 
-        ItemStack nameTag = new ItemStack(Material.NAME_TAG, 1);
-        NamespacedKey nameTagKey = new NamespacedKey(plugin, "nametag");
-        ShapedRecipe nameTagRecipe = new ShapedRecipe(nameTagKey, nameTag);
-        nameTagRecipe.shape("XXX", " S ", " P ");
-        nameTagRecipe.setIngredient('S', Material.STRING);
-        nameTagRecipe.setIngredient('P', Material.PAPER);
-        Bukkit.addRecipe(nameTagRecipe);
-        keys.add(nameTagKey);
+        if (ConfigHandler.configYaml.getBoolean("settings.recipes.craftable_nametag")) {
+            ItemStack nameTag = new ItemStack(Material.NAME_TAG, 1);
+            NamespacedKey nameTagKey = new NamespacedKey(plugin, "nametag");
+            ShapedRecipe nameTagRecipe = new ShapedRecipe(nameTagKey, nameTag);
+            nameTagRecipe.shape("XXX", " S ", " P ");
+            nameTagRecipe.setIngredient('S', Material.STRING);
+            nameTagRecipe.setIngredient('P', Material.PAPER);
+            Bukkit.addRecipe(nameTagRecipe);
+            recipeKeys.add(nameTagKey);
+        }
 
-        ItemStack TNT = new ItemStack(Material.TNT, 1);
-        NamespacedKey TNTKey = new NamespacedKey(plugin, "customtnt");
-        ShapedRecipe TNTRecipe = new ShapedRecipe(TNTKey, TNT);
-        TNTRecipe.shape("PSP", "SGS", "PSP");
-        TNTRecipe.setIngredient('P', Material.PAPER);
-        TNTRecipe.setIngredient('S', Material.SAND);
-        TNTRecipe.setIngredient('G', Material.GUNPOWDER);
-        Bukkit.addRecipe(TNTRecipe);
-        keys.add(TNTKey);
+        if (ConfigHandler.configYaml.getBoolean("settings.recipes.paper_tnt")) {
+            ItemStack TNT = new ItemStack(Material.TNT, 1);
+            NamespacedKey TNTKey = new NamespacedKey(plugin, "customtnt");
+            ShapedRecipe TNTRecipe = new ShapedRecipe(TNTKey, TNT);
+            TNTRecipe.shape("PSP", "SGS", "PSP");
+            TNTRecipe.setIngredient('P', Material.PAPER);
+            TNTRecipe.setIngredient('S', Material.SAND);
+            TNTRecipe.setIngredient('G', Material.GUNPOWDER);
+            Bukkit.addRecipe(TNTRecipe);
+            recipeKeys.add(TNTKey);
+        }
 
-        ItemStack sporeBlossom = new ItemStack(Material.SPORE_BLOSSOM, 1);
-        NamespacedKey sporeBlossomKey = new NamespacedKey(plugin, "sporeblossom");
-        ShapedRecipe sporeBlossomRecipe = new ShapedRecipe(sporeBlossomKey, sporeBlossom);
-        sporeBlossomRecipe.shape("  M", " L ", "XXX");
-        sporeBlossomRecipe.setIngredient('M', Material.MOSS_BLOCK);
-        sporeBlossomRecipe.setIngredient('L', Material.LILAC);
-        Bukkit.addRecipe(sporeBlossomRecipe);
-        keys.add(sporeBlossomKey);
+        if (ConfigHandler.configYaml.getBoolean("settings.recipes.craftable_sporeblossom")) {
+            ItemStack sporeBlossom = new ItemStack(Material.SPORE_BLOSSOM, 1);
+            NamespacedKey sporeBlossomKey = new NamespacedKey(plugin, "sporeblossom");
+            ShapedRecipe sporeBlossomRecipe = new ShapedRecipe(sporeBlossomKey, sporeBlossom);
+            sporeBlossomRecipe.shape("  M", " L ", "XXX");
+            sporeBlossomRecipe.setIngredient('M', Material.MOSS_BLOCK);
+            sporeBlossomRecipe.setIngredient('L', Material.LILAC);
+            Bukkit.addRecipe(sporeBlossomRecipe);
+            recipeKeys.add(sporeBlossomKey);
+        }
 
         for (Player player : Bukkit.getOnlinePlayers())
-            for (NamespacedKey key : keys)
+            for (NamespacedKey key : recipeKeys)
                 player.discoverRecipe(key);
 
     }
@@ -96,7 +104,7 @@ public final class DoubleLife extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BlockBannedItems(), plugin);
         Bukkit.getPluginManager().registerEvents(new ChatFormat(), plugin);
 
-        keys = new ArrayList<>();
+        recipeKeys = new ArrayList<>();
         createRecipes();
     }
 

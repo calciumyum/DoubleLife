@@ -41,7 +41,7 @@ public class PairHealth implements Listener {
         justHadALifeRemoved.add(playerWhoDied.getUniqueId());
         if (soulmate != null && !justHadALifeRemoved.contains(soulmate.getUniqueId())) {
             justHadALifeRemoved.add(soulmate.getUniqueId());
-        } else if (soulmate == null) {
+        } else if (soulmate == null && ConfigHandler.configYaml.getBoolean("settings.other.killSoulmateOnJoinIfOfflineDuringDeath")) {
             OfflinePlayer offlineSoulmate = SaveHandler.getOfflineSoulmate(playerWhoDied);
             if ((offlineSoulmate != null) && !soulmateDiedWhileOffline.contains(offlineSoulmate.getUniqueId()))
                 soulmateDiedWhileOffline.add(offlineSoulmate.getUniqueId());
