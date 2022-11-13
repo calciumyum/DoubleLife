@@ -39,6 +39,8 @@ public class ConfigHandler {
             configYaml.set("settings.recipes.paper_tnt", true);
             configYaml.set("settings.recipes.craftable_sporeblossom", true);
 
+            configYaml.set("settings.entities.villagers_spawn", true);
+
             configYaml.set("settings.other.setSpawnPointAtDistributedLocation", false);
             configYaml.set("settings.other.banPlayersUponLosing", false);
             configYaml.set("settings.other.playExplosionSoundOnDeath", true);

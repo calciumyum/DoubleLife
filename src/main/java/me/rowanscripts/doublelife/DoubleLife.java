@@ -9,7 +9,7 @@ import me.rowanscripts.doublelife.listeners.PairHealth;
 import me.rowanscripts.doublelife.listeners.ShareEffects;
 import me.rowanscripts.doublelife.scoreboard.TeamHandler;
 import me.rowanscripts.doublelife.util.commandArguments;
-import me.rowanscripts.doublelife.util.hiddenClass;
+import me.rowanscripts.doublelife.util.code;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -89,7 +89,7 @@ public final class DoubleLife extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        int pluginId = hiddenClass.getMetricsId();
+        int pluginId = code.get();
         Metrics metrics = new Metrics(plugin, pluginId);
 
         ConfigHandler.construct();
@@ -103,6 +103,8 @@ public final class DoubleLife extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShareEffects(), plugin);
         Bukkit.getPluginManager().registerEvents(new BlockBannedItems(), plugin);
         Bukkit.getPluginManager().registerEvents(new ChatFormat(), plugin);
+
+        BlockBannedItems.startKillVillagersLoop();
 
         recipeKeys = new ArrayList<>();
         createRecipes();

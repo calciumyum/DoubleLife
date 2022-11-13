@@ -5,6 +5,7 @@ import me.rowanscripts.doublelife.data.ConfigHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -33,9 +34,20 @@ import java.util.UUID;
 
 public class BlockBannedItems implements Listener {
 
+    static World currentWorld;
+
     @EventHandler
-    public void discoverRecipes(PlayerJoinEvent event){
-        event.getPlayer().discoverRecipes(DoubleLife.recipeKeys);
+    public void discoverRecipes(PlayerJoinEvent event){event.getPlayer().discoverRecipes(DoubleLife.recipeKeys); currentWorld = event.getPlayer().getWorld();}
+
+    public static void startKillVillagersLoop() {
+        if (ConfigHandler.configYaml.getBoolean("settings.entities.villagers_spawn"))
+            return;
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(DoubleLife.plugin, () -> {
+            for (Entity entity : currentWorld.getEntities()) {
+                if (entity.getType() == EntityType.VILLAGER)
+                    entity.remove();
+            }
+        }, 100, 50);
     }
 
     @EventHandler
@@ -56,6 +68,8 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler
     public void blockVillagerSpawns(EntitySpawnEvent event) {
+        if (ConfigHandler.configYaml.getBoolean("settings.entities.villagers_spawn"))
+            return;
         Entity entity = event.getEntity();
         if (entity.getType() == EntityType.VILLAGER || entity.getType() == EntityType.ZOMBIE_VILLAGER)
             event.setCancelled(true);
