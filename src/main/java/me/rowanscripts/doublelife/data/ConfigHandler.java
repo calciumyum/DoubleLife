@@ -3,9 +3,12 @@ package me.rowanscripts.doublelife.data;
 import me.rowanscripts.doublelife.DoubleLife;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.potion.PotionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigHandler {
 
@@ -25,8 +28,17 @@ public class ConfigHandler {
             configYaml.set("settings.gamerules.spawnRadius", 0);
 
             configYaml.set("settings.items.ban_helmets", true);
-            configYaml.set("settings.items.ban_op_potions", true);
             configYaml.set("settings.items.ban_god_apples", true);
+            configYaml.set("settings.items.potions.whitelist_enabled", true);
+            List<String> potionWhiteList = new ArrayList<>();
+            potionWhiteList.add("WATER");
+            potionWhiteList.add("AWKWARD");
+            potionWhiteList.add("MUNDANE");
+            potionWhiteList.add("INVISIBILITY");
+            potionWhiteList.add("SPEED");
+            potionWhiteList.add("FIRE_RESISTANCE");
+            potionWhiteList.add("NIGHT_VISION");
+            configYaml.set("settings.items.potions.whitelist", potionWhiteList);
 
             configYaml.set("settings.enchanter.craftable", false);
             configYaml.set("settings.enchanter.bookshelves_craftable", false);

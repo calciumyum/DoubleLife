@@ -27,10 +27,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class BlockBannedItems implements Listener {
 
@@ -84,27 +81,28 @@ public class BlockBannedItems implements Listener {
             event.setCancelled(true);
     }
 
+    @SuppressWarnings("unchecked")
     @EventHandler
     public void blockBannedPotions(InventoryClickEvent event) {
-        if (!ConfigHandler.configYaml.getBoolean("ban_op_potions"))
+        if (!ConfigHandler.configYaml.getBoolean("settings.items.potions.whitelist_enabled"))
             return;
 
-        if (event.getInventory().getType() == InventoryType.BREWING) {
-            ItemStack itemStack = event.getCurrentItem();
-            if (itemStack == null)
-                return;
+        ItemStack itemStack = event.getCurrentItem();
+        if (itemStack == null)
+            return;
 
-            if (itemStack.getType() == Material.POTION || itemStack.getType() == Material.SPLASH_POTION) {
-                PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-                PotionType potionType = potionMeta.getBasePotionData().getType();
-                if (potionType == PotionType.AWKWARD || potionType == PotionType.WATER || potionType == PotionType.SPEED || potionType == PotionType.INVISIBILITY) {
-                } else {
-                    event.setCancelled(true);
-                    itemStack.setType(Material.GLASS_BOTTLE);
-                    for (HumanEntity viewer : event.getClickedInventory().getViewers()) {
-                        Player cheater = (Player) viewer;
-                        cheater.sendMessage(ChatColor.DARK_RED + "That potion is banned on this server!");
-                    }
+        if (itemStack.getType() == Material.POTION || itemStack.getType() == Material.SPLASH_POTION) {
+            PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+            PotionType potionType = potionMeta.getBasePotionData().getType();
+            List<String> potionWhitelist = (List<String>) ConfigHandler.configYaml.getList("settings.items.potions.whitelist");
+            if (potionWhitelist == null) return;
+            System.out.println(potionType);
+            if (!potionWhitelist.contains(potionType.toString())) {
+                event.setCancelled(true);
+                itemStack.setType(Material.GLASS_BOTTLE);
+                for (HumanEntity viewer : event.getClickedInventory().getViewers()) {
+                    Player cheater = (Player) viewer;
+                    cheater.sendMessage(ChatColor.DARK_RED + "That potion is banned on this server!");
                 }
             }
         }
