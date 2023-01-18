@@ -37,7 +37,7 @@ public class BlockBannedItems implements Listener {
     public void discoverRecipes(PlayerJoinEvent event){event.getPlayer().discoverRecipes(DoubleLife.recipeKeys); currentWorld = event.getPlayer().getWorld();}
 
     public static void startKillVillagersLoop() {
-        if (DoubleLife.plugin.getConfig().getBoolean("misc.kill-villagers"))
+        if (!DoubleLife.plugin.getConfig().getBoolean("misc.kill-villagers"))
             return;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(DoubleLife.plugin, () -> {
             if (currentWorld != null) {
@@ -68,7 +68,7 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler
     public void blockVillagerSpawns(EntitySpawnEvent event) {
-        if (DoubleLife.plugin.getConfig().getBoolean("misc.kill-villagers"))
+        if (!DoubleLife.plugin.getConfig().getBoolean("misc.kill-villagers"))
             return;
         Entity entity = event.getEntity();
         if (entity.getType() == EntityType.VILLAGER || entity.getType() == EntityType.ZOMBIE_VILLAGER)
