@@ -9,7 +9,7 @@ import me.rowanscripts.doublelife.listeners.PairHealth;
 import me.rowanscripts.doublelife.listeners.ShareEffects;
 import me.rowanscripts.doublelife.scoreboard.TeamHandler;
 import me.rowanscripts.doublelife.util.commandArguments;
-import me.rowanscripts.doublelife.util.code;
+import me.rowanscripts.doublelife.util.bStatsCode;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -31,11 +31,13 @@ public final class DoubleLife extends JavaPlugin {
 
     public static JavaPlugin plugin;
 
+    public static ConfigHandler ConfigHandler;
+
     public static Collection<NamespacedKey> recipeKeys;
 
     public void createRecipes(){
 
-        if (ConfigHandler.configYaml.getBoolean("settings.recipes.craftable_saddle")) {
+        if (plugin.getConfig().getBoolean("recipes.craftable-saddle")) {
             ItemStack saddle = new ItemStack(Material.SADDLE, 1);
             NamespacedKey saddleKey = new NamespacedKey(plugin, "saddle");
             ShapedRecipe saddleRecipe = new ShapedRecipe(saddleKey, saddle);
@@ -45,9 +47,9 @@ public final class DoubleLife extends JavaPlugin {
             recipeKeys.add(saddleKey);
         }
 
-        if (ConfigHandler.configYaml.getBoolean("settings.recipes.craftable_nametag")) {
+        if (plugin.getConfig().getBoolean("recipes.craftable-name-tag")) {
             ItemStack nameTag = new ItemStack(Material.NAME_TAG, 1);
-            NamespacedKey nameTagKey = new NamespacedKey(plugin, "nametag");
+            NamespacedKey nameTagKey = new NamespacedKey(plugin, "name_tag");
             ShapedRecipe nameTagRecipe = new ShapedRecipe(nameTagKey, nameTag);
             nameTagRecipe.shape("XXX", " S ", " P ");
             nameTagRecipe.setIngredient('S', Material.STRING);
@@ -56,9 +58,9 @@ public final class DoubleLife extends JavaPlugin {
             recipeKeys.add(nameTagKey);
         }
 
-        if (ConfigHandler.configYaml.getBoolean("settings.recipes.paper_tnt")) {
+        if (plugin.getConfig().getBoolean("recipes.paper-tnt")) {
             ItemStack TNT = new ItemStack(Material.TNT, 1);
-            NamespacedKey TNTKey = new NamespacedKey(plugin, "customtnt");
+            NamespacedKey TNTKey = new NamespacedKey(plugin, "paper_tnt");
             ShapedRecipe TNTRecipe = new ShapedRecipe(TNTKey, TNT);
             TNTRecipe.shape("PSP", "SGS", "PSP");
             TNTRecipe.setIngredient('P', Material.PAPER);
@@ -68,9 +70,9 @@ public final class DoubleLife extends JavaPlugin {
             recipeKeys.add(TNTKey);
         }
 
-        if (ConfigHandler.configYaml.getBoolean("settings.recipes.craftable_sporeblossom")) {
+        if (plugin.getConfig().getBoolean("recipes.craftable-spore-blossom")) {
             ItemStack sporeBlossom = new ItemStack(Material.SPORE_BLOSSOM, 1);
-            NamespacedKey sporeBlossomKey = new NamespacedKey(plugin, "sporeblossom");
+            NamespacedKey sporeBlossomKey = new NamespacedKey(plugin, "spore_blossom");
             ShapedRecipe sporeBlossomRecipe = new ShapedRecipe(sporeBlossomKey, sporeBlossom);
             sporeBlossomRecipe.shape("  M", " L ", "XXX");
             sporeBlossomRecipe.setIngredient('M', Material.MOSS_BLOCK);
@@ -89,10 +91,10 @@ public final class DoubleLife extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        int pluginId = code.get();
+        int pluginId = bStatsCode.get();
         Metrics metrics = new Metrics(plugin, pluginId);
 
-        ConfigHandler.construct();
+        ConfigHandler = new ConfigHandler();
         SaveHandler.construct();
 
         plugin.getCommand("doublelife").setExecutor(new mainCommandExecutor());
@@ -133,6 +135,8 @@ public final class DoubleLife extends JavaPlugin {
                 return help.onCommand(sender, command, label, args);
             else if (args[0].equalsIgnoreCase("reload"))
                 return reload.onCommand(sender, command, label, args);
+            else if (args[0].equalsIgnoreCase("config"))
+                return config.onCommand(sender, command, label, args);
 
             return false;
         }
@@ -154,6 +158,8 @@ public final class DoubleLife extends JavaPlugin {
                     return unpair.getAppropriateArguments(args);
                 else if (args[0].equalsIgnoreCase("setLives"))
                     return setLives.getAppropriateArguments(args);
+                else if (args[0].equalsIgnoreCase("config"))
+                    return config.getAppropriateArguments(args);
             }
 
             return new ArrayList<>();

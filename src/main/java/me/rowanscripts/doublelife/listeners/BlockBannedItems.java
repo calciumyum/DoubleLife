@@ -37,12 +37,15 @@ public class BlockBannedItems implements Listener {
     public void discoverRecipes(PlayerJoinEvent event){event.getPlayer().discoverRecipes(DoubleLife.recipeKeys); currentWorld = event.getPlayer().getWorld();}
 
     public static void startKillVillagersLoop() {
-        if (ConfigHandler.configYaml.getBoolean("settings.entities.villagers_spawn"))
+        if (DoubleLife.plugin.getConfig().getBoolean("misc.kill-villagers"))
             return;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(DoubleLife.plugin, () -> {
-            for (Entity entity : currentWorld.getEntities()) {
-                if (entity.getType() == EntityType.VILLAGER)
-                    entity.remove();
+            if (currentWorld != null) {
+                for (Entity entity : currentWorld.getEntities()) {
+                    if (entity.getType() == EntityType.VILLAGER) {
+                        entity.remove();
+                    }
+                }
             }
         }, 100, 50);
     }
@@ -53,7 +56,7 @@ public class BlockBannedItems implements Listener {
         if (itemStack == null)
             return;
 
-        if (itemStack.getType() == Material.ENCHANTED_GOLDEN_APPLE && ConfigHandler.configYaml.getBoolean("settings.items.ban_god_apples")) {
+        if (itemStack.getType() == Material.ENCHANTED_GOLDEN_APPLE && DoubleLife.plugin.getConfig().getBoolean("items.ban-god-apples")) {
 
             itemStack.setAmount(0);
             for (HumanEntity viewer : event.getClickedInventory().getViewers()) {
@@ -65,7 +68,7 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler
     public void blockVillagerSpawns(EntitySpawnEvent event) {
-        if (ConfigHandler.configYaml.getBoolean("settings.entities.villagers_spawn"))
+        if (DoubleLife.plugin.getConfig().getBoolean("misc.kill-villagers"))
             return;
         Entity entity = event.getEntity();
         if (entity.getType() == EntityType.VILLAGER || entity.getType() == EntityType.ZOMBIE_VILLAGER)
@@ -75,16 +78,16 @@ public class BlockBannedItems implements Listener {
     @EventHandler
     public void blockEnchantmentTableRecipe(CraftItemEvent event) {
         Material recipeType = event.getRecipe().getResult().getType();
-        if (recipeType == Material.ENCHANTING_TABLE && !ConfigHandler.configYaml.getBoolean("settings.enchanter.craftable"))
+        if (recipeType == Material.ENCHANTING_TABLE && !DoubleLife.plugin.getConfig().getBoolean("enchantments.enchantment-table-craftable"))
             event.setCancelled(true);
-        else if (recipeType == Material.BOOKSHELF && !ConfigHandler.configYaml.getBoolean("settings.enchanter.bookshelves_craftable"))
+        else if (recipeType == Material.BOOKSHELF && !DoubleLife.plugin.getConfig().getBoolean("enchantments.bookshelves-craftable"))
             event.setCancelled(true);
     }
 
     @SuppressWarnings("unchecked")
     @EventHandler
     public void blockBannedPotions(InventoryClickEvent event) {
-        if (!ConfigHandler.configYaml.getBoolean("settings.items.potions.whitelist_enabled"))
+        if (!DoubleLife.plugin.getConfig().getBoolean("items.potions.whitelist-enabled"))
             return;
 
         ItemStack itemStack = event.getCurrentItem();
@@ -94,7 +97,7 @@ public class BlockBannedItems implements Listener {
         if (itemStack.getType() == Material.POTION || itemStack.getType() == Material.SPLASH_POTION) {
             PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
             PotionType potionType = potionMeta.getBasePotionData().getType();
-            List<String> potionWhitelist = (List<String>) ConfigHandler.configYaml.getList("settings.items.potions.whitelist");
+            List<String> potionWhitelist = (List<String>) DoubleLife.plugin.getConfig().getList("items.potions.whitelist");
             if (potionWhitelist == null) return;
             System.out.println(potionType);
             if (!potionWhitelist.contains(potionType.toString())) {
@@ -153,7 +156,7 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void modifyIllegalEnchantments(PrepareAnvilEvent event) {
-        if (!ConfigHandler.configYaml.getBoolean("settings.enchanter.nerf_enchantments"))
+        if (!DoubleLife.plugin.getConfig().getBoolean("enchantments.nerf-enchantment-stacking"))
             return;
 
         ItemStack resultItem = event.getResult();
@@ -179,7 +182,7 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler
     public void removeHelmets(InventoryClickEvent event) {
-        if (!ConfigHandler.configYaml.getBoolean("settings.items.ban_helmets"))
+        if (!DoubleLife.plugin.getConfig().getBoolean("items.ban-helmets"))
             return;
 
         ItemStack item = event.getCurrentItem();
@@ -197,7 +200,7 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler
     public void makeEnchantmentTableIndestructibleOnDrop(PlayerDropItemEvent event) {
-        if (!ConfigHandler.configYaml.getBoolean("settings.enchanter.indestructible_on_drop"))
+        if (!DoubleLife.plugin.getConfig().getBoolean("enchantments.enchantment-table-indestructible-on-drop"))
             return;
         ItemStack droppedItem = event.getItemDrop().getItemStack();
         if (droppedItem.getType() == Material.ENCHANTING_TABLE){
@@ -210,7 +213,7 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler
     public void preventExplodingOfEnchantmentTable(EntityDamageByEntityEvent event){
-        if (!ConfigHandler.configYaml.getBoolean("settings.enchanter.indestructible_on_drop"))
+        if (!DoubleLife.plugin.getConfig().getBoolean("enchantments.enchantment-table-indestructible-on-drop"))
             return;
         for (Entity entity : event.getDamager().getNearbyEntities(10,10,10)) {
             if (entity.getType() == EntityType.DROPPED_ITEM){
@@ -225,7 +228,7 @@ public class BlockBannedItems implements Listener {
 
     @EventHandler
     public void blockDestroyingEnchantmentTable(BlockBreakEvent event) {
-        if (!ConfigHandler.configYaml.getBoolean("settings.enchanter.unbreakable"))
+        if (DoubleLife.plugin.getConfig().getBoolean("enchantments.enchantment-table-breakable"))
             return;
 
         if (event.getBlock().getType() == Material.ENCHANTING_TABLE) {

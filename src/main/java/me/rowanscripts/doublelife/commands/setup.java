@@ -1,5 +1,6 @@
 package me.rowanscripts.doublelife.commands;
 
+import me.rowanscripts.doublelife.DoubleLife;
 import me.rowanscripts.doublelife.data.ConfigHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.GameRule;
@@ -24,17 +25,17 @@ public class setup {
         World world = player.getWorld();
         String gameruleSettingsPath = "settings.gamerules.";
 
-        world.setGameRule(GameRule.RANDOM_TICK_SPEED, ConfigHandler.configYaml.getInt(gameruleSettingsPath + "randomTickSpeed"));
-        world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, ConfigHandler.configYaml.getBoolean(gameruleSettingsPath + "spectatorsGenerateChunks"));
-        world.setGameRule(GameRule.DO_WEATHER_CYCLE, ConfigHandler.configYaml.getBoolean(gameruleSettingsPath + "doWeatherCycle"));
-        world.setGameRule(GameRule.DO_INSOMNIA, ConfigHandler.configYaml.getBoolean(gameruleSettingsPath + "doInsomnia"));
-        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, ConfigHandler.configYaml.getBoolean(gameruleSettingsPath + "announceAdvancements"));
-        world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, ConfigHandler.configYaml.getInt(gameruleSettingsPath + "playersSleepingPercentage"));
-        world.setGameRule(GameRule.SPAWN_RADIUS, ConfigHandler.configYaml.getInt(gameruleSettingsPath + "spawnRadius"));
+        world.setGameRule(GameRule.RANDOM_TICK_SPEED, DoubleLife.plugin.getConfig().getInt("gamerules.random-tick-speed"));
+        world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, DoubleLife.plugin.getConfig().getBoolean("gamerules.spectators-generate-chunks"));
+        world.setGameRule(GameRule.DO_WEATHER_CYCLE, DoubleLife.plugin.getConfig().getBoolean("gamerules.do-weather-cycle"));
+        world.setGameRule(GameRule.DO_INSOMNIA, DoubleLife.plugin.getConfig().getBoolean("gamerules.do-insomnia"));
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, DoubleLife.plugin.getConfig().getBoolean("gamerules.announce-advancements"));
+        world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, DoubleLife.plugin.getConfig().getInt("gamerules.players-sleeping-percentage"));
+        world.setGameRule(GameRule.SPAWN_RADIUS, DoubleLife.plugin.getConfig().getInt("gamerules.spawn-radius"));
 
         world.setSpawnLocation(player.getLocation());
         world.getWorldBorder().setCenter(player.getLocation());
-        world.getWorldBorder().setSize(ConfigHandler.configYaml.getDouble("settings.other.borderSize"));
+        world.getWorldBorder().setSize(DoubleLife.plugin.getConfig().getDouble("misc.border-size"));
 
         player.sendMessage(ChatColor.DARK_GREEN + "The world has been set up!");
         return true;

@@ -15,6 +15,7 @@ public class commandArguments {
         arguments.add("setup");
         arguments.add("unpair");
         arguments.add("reload");
+        arguments.add("config");
         return arguments;
     }
 

@@ -41,7 +41,7 @@ public class PairHealth implements Listener {
         justHadALifeRemoved.add(playerWhoDied.getUniqueId());
         if (soulmate != null && !justHadALifeRemoved.contains(soulmate.getUniqueId())) {
             justHadALifeRemoved.add(soulmate.getUniqueId());
-        } else if (soulmate == null && ConfigHandler.configYaml.getBoolean("settings.other.killSoulmateOnJoinIfOfflineDuringDeath")) {
+        } else if (soulmate == null && DoubleLife.plugin.getConfig().getBoolean("misc.kill-soulmate-on-join-if-offline-during-death")) {
             OfflinePlayer offlineSoulmate = SaveHandler.getOfflineSoulmate(playerWhoDied);
             if ((offlineSoulmate != null) && !soulmateDiedWhileOffline.contains(offlineSoulmate.getUniqueId()))
                 soulmateDiedWhileOffline.add(offlineSoulmate.getUniqueId());
@@ -55,7 +55,7 @@ public class PairHealth implements Listener {
         int currentLivesAmount = SaveHandler.getPairLivesAmount(playerWhoDied);
         SaveHandler.setPairLivesAmount(playerWhoDied, (currentLivesAmount - 1));
 
-        if (currentLivesAmount - 1 == 0 && ConfigHandler.configYaml.getBoolean("settings.other.playExplosionSoundOnDeath")){
+        if (currentLivesAmount - 1 == 0 && DoubleLife.plugin.getConfig().getBoolean("misc.global-explosion-sound-on-final-death")){
             for (Player player : Bukkit.getOnlinePlayers())
                 player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10, 1);
         }

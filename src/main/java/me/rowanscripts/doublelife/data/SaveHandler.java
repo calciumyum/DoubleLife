@@ -133,7 +133,6 @@ public class SaveHandler {
     }
 
     public static boolean setPairLivesAmount(Player pairMember, Integer amount) {
-        YamlConfiguration configYaml = ConfigHandler.configYaml;
         if (amount > 3 || amount < 0)
             return false;
 

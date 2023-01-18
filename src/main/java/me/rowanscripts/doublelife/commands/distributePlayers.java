@@ -42,7 +42,7 @@ public class distributePlayers {
             } while (teleportLocation == null);
             teleportLocation.setY(teleportLocation.getY() + 1);
             participant.teleport(teleportLocation);
-            if (ConfigHandler.configYaml.getBoolean("settings.other.setSpawnPointAtDistributedLocation"))
+            if (DoubleLife.plugin.getConfig().getBoolean("misc.set-spawn-point-at-distributed-location"))
                 participant.setBedSpawnLocation(teleportLocation, true);
 
             participant.setSaturation(20);
