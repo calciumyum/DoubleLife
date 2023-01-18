@@ -26,7 +26,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 public final class DoubleLife extends JavaPlugin {
 
@@ -93,7 +92,7 @@ public final class DoubleLife extends JavaPlugin {
         plugin = this;
 
         int pluginId = bStatsCode.get();
-        Metrics metrics = new Metrics(plugin, pluginId);
+        new Metrics(plugin, pluginId);
 
         ConfigHandler = new ConfigHandler();
         SaveHandler.construct();
@@ -117,7 +116,7 @@ public final class DoubleLife extends JavaPlugin {
                 getLogger().info("The plugin is up to date!");
             } else {
                 getLogger().severe("There is a newer version available!  Running: " + this.getDescription().getVersion() + "  Newest: " + version);
-                getLogger().severe("You may download the newest version here: https://modrinth.com/plugin/double-life");
+                getLogger().severe("You may download it here: https://modrinth.com/plugin/double-life");
             }
         });
     }

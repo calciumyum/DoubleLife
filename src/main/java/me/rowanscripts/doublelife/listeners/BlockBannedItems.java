@@ -1,7 +1,6 @@
 package me.rowanscripts.doublelife.listeners;
 
 import me.rowanscripts.doublelife.DoubleLife;
-import me.rowanscripts.doublelife.data.ConfigHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +15,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -61,7 +59,7 @@ public class BlockBannedItems implements Listener {
             itemStack.setAmount(0);
             for (HumanEntity viewer : event.getClickedInventory().getViewers()) {
                 Player cheater = (Player) viewer;
-                cheater.sendMessage(ChatColor.DARK_RED + "Enchanted Golden Apples are banned!");
+                cheater.sendMessage(ChatColor.DARK_RED + "Enchanted Golden Apples aren't allowed!");
             }
         }
     }
@@ -148,7 +146,7 @@ public class BlockBannedItems implements Listener {
                 break;
 
             justGotNerfed.put(viewerUUID, nerfedEnchantments);
-            Bukkit.getScheduler().runTaskLater(DoubleLife.plugin, () -> { justGotNerfed.remove(viewerUUID); }, 60);
+            Bukkit.getScheduler().runTaskLater(DoubleLife.plugin, () -> justGotNerfed.remove(viewerUUID), 60);
             if (!nerfedEnchantmentsMessage.toString().equals(ChatColor.DARK_RED + "The following enchantments have been nerfed:\n" + ChatColor.GRAY))
                 viewer.sendMessage(String.valueOf(nerfedEnchantmentsMessage));
         }

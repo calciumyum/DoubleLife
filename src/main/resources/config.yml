@@ -1,4 +1,4 @@
-######## Configuration Version: 1
+config-version: 1
 
 ####### Gamerules #########################################################################################
 #### These settings will be applied when you run the '/dl setup' command!

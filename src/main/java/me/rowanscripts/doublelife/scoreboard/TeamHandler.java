@@ -1,7 +1,6 @@
 package me.rowanscripts.doublelife.scoreboard;
 
 import me.rowanscripts.doublelife.DoubleLife;
-import me.rowanscripts.doublelife.data.ConfigHandler;
 import me.rowanscripts.doublelife.data.SaveHandler;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -72,7 +71,7 @@ public class TeamHandler implements Listener {
                 scoreboard.getTeam("spectator").addEntry(player.getName());
                 if (DoubleLife.plugin.getConfig().getBoolean("misc.ban-players-upon-losing")) {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You've been banned because the server owner has configured the server to do so after you lose all of your lives!", null, "DoubleLife");
-                    player.kickPlayer("You've been banned because you're out of the season!");
+                    player.kickPlayer("You've been banned because you're out of lives!");
                 }
             } else if (livesAmount == 1) {
                 player.setGameMode(GameMode.SURVIVAL);
