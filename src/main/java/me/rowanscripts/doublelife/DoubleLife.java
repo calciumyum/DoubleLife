@@ -110,6 +110,14 @@ public final class DoubleLife extends JavaPlugin {
 
         recipeKeys = new ArrayList<>();
         createRecipes();
+
+        new UpdateChecker(plugin, 12345).getVersion(version -> {
+            if (this.getDescription().getVersion().equals(version)) {
+                getLogger().info("The plugin is up to date!");
+            } else {
+                getLogger().info("There is a newer version available! Running: " + this.getDescription().getVersion() + "  Newest: " + version);
+            }
+        });
     }
 
     public class mainCommandExecutor implements CommandExecutor {
