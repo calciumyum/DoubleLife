@@ -26,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 
 public final class DoubleLife extends JavaPlugin {
 
@@ -110,6 +111,15 @@ public final class DoubleLife extends JavaPlugin {
 
         recipeKeys = new ArrayList<>();
         createRecipes();
+
+        new UpdateChecker(plugin, 106141).getVersion(version -> {
+            if (this.getDescription().getVersion().equals(version)) {
+                getLogger().info("The plugin is up to date!");
+            } else {
+                getLogger().severe("There is a newer version available!  Running: " + this.getDescription().getVersion() + "  Newest: " + version);
+                getLogger().severe("You may download the newest version here: https://modrinth.com/plugin/double-life");
+            }
+        });
     }
 
     public class mainCommandExecutor implements CommandExecutor {
