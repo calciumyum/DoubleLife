@@ -55,6 +55,7 @@ public class config {
 
         sender.sendMessage(ChatColor.DARK_GREEN + "You've successfully changed the setting " + ChatColor.GREEN + settingToChange + ChatColor.DARK_GREEN + " to " + ChatColor.GREEN + newValue + ChatColor.DARK_GREEN + "!");
         plugin.saveConfig();
+        plugin.reloadConfig();
         return true;
     }
 

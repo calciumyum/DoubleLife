@@ -1,8 +1,10 @@
 package me.rowanscripts.doublelife.commands;
 
+import me.rowanscripts.doublelife.DoubleLife;
 import me.rowanscripts.doublelife.data.SaveHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,7 +18,11 @@ import java.util.UUID;
 
 public class randomizePairs {
 
+    private static boolean rolling = false;
+
     public static boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (rolling) return true;
+
         if (sender instanceof ConsoleCommandSender){
             sender.sendMessage(ChatColor.RED + "This is a player only command!");
             return true;
@@ -40,19 +46,45 @@ public class randomizePairs {
             sender.sendMessage(ChatColor.DARK_RED + "Not enough players!");
             return true;
         }
+        rolling = true;
 
-        Random r = new Random();
-        while (availablePlayers.size() > 1){
-            UUID playerOne = availablePlayers.get(r.nextInt(availablePlayers.size()));
-            UUID playerTwo = availablePlayers.get(r.nextInt(availablePlayers.size()));
-            if (playerOne != playerTwo) {
-                availablePlayers.remove(playerOne);
-                availablePlayers.remove(playerTwo);
-                SaveHandler.createPair(playerOne, playerTwo, 3);
+        availablePlayers.forEach(playerUUID -> {
+            Player player = Bukkit.getPlayer(playerUUID);
+            if (player != null)
+                player.sendTitle(ChatColor.GREEN + "Your soulmate is..", null, 10, 100, 10);
+        });
+
+        Bukkit.getScheduler().runTaskLater(DoubleLife.plugin, () -> {
+            Random r = new Random();
+            while (availablePlayers.size() > 1){
+                UUID playerOneUUID = availablePlayers.get(r.nextInt(availablePlayers.size()));
+                UUID playerTwoUUID = availablePlayers.get(r.nextInt(availablePlayers.size()));
+                if (playerOneUUID != playerTwoUUID) {
+                    availablePlayers.remove(playerOneUUID);
+                    availablePlayers.remove(playerTwoUUID);
+                    SaveHandler.createPair(playerOneUUID, playerTwoUUID, 3);
+
+                    Player playerOne = Bukkit.getPlayer(playerOneUUID);
+                    Player playerTwo = Bukkit.getPlayer(playerTwoUUID);
+                    if (playerOne != null && playerTwo != null) {
+                        if (DoubleLife.plugin.getConfig().getBoolean("misc.reveal-soulmates")) {
+                            playerOne.sendTitle(ChatColor.GOLD + ChatColor.BOLD.toString() + playerTwo.getName(), null, 10, 100, 10);
+                            playerOne.playSound(playerOne, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1);
+                            playerTwo.sendTitle(ChatColor.GOLD + ChatColor.BOLD.toString() + playerOne.getName(), null, 10, 100, 10);
+                            playerTwo.playSound(playerTwo, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1);
+                        } else {
+                            playerOne.sendTitle(ChatColor.GOLD + ChatColor.BOLD.toString() + "????", null, 10, 100, 10);
+                            playerOne.playSound(playerOne, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1);
+                            playerTwo.sendTitle(ChatColor.GOLD + ChatColor.BOLD.toString() + "????", null, 10, 100, 10);
+                            playerTwo.playSound(playerTwo, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1);
+                        }
+                    }
+                }
             }
-        }
+            rolling = false;
+        }, 100);
 
-        Bukkit.broadcastMessage(ChatColor.DARK_GREEN + ChatColor.BOLD.toString() + "Everyone now has a random soulmate!");
+        Bukkit.broadcastMessage(ChatColor.DARK_GREEN + ChatColor.BOLD.toString() + "Randomizing soulmates!");
         return true;
     }
 

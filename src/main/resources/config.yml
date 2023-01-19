@@ -1,4 +1,4 @@
-config-version: 1
+config-version: 2
 
 ####### Gamerules #########################################################################################
 #### These settings will be applied when you run the '/dl setup' command!
@@ -75,6 +75,10 @@ recipes:
 ####### Miscellaneous #########################################################################################
 #### A section for settings which don't fall under another category.
 misc:
+  ## Enabling this setting will reveal everyone's soulmate
+  ## upon running the '/dl randomizepairs' command.
+  reveal-soulmates: false
+
   ## Enabling this setting will cause all players to have their spawnpoint
   ## set to the location they get teleported to after running the
   ## '/dl distributeplayers' command.

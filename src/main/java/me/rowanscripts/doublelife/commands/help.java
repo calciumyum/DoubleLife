@@ -13,6 +13,8 @@ public class help {
                         ChatColor.GRAY + "Shows this list." +
                         ChatColor.GREEN + "\n\n/dl reload - " +
                         ChatColor.GRAY + "Reloads the configuration file so that you can apply changed settings without having to restart or reload the entire server!" +
+                        ChatColor.GREEN + "\n\n/dl config <setting> <value> - " +
+                        ChatColor.GRAY + "Allows you to make changes to the config.yml file from within the game! (Reloads Automatically)" +
                         ChatColor.GREEN + "\n\n/dl setup - " +
                         ChatColor.GRAY + "Changes the gamerules to the configured values (config.yml) and sets the world's spawn at your current location." +
                         ChatColor.GREEN + "\n\n/dl randomizepairs - " +
