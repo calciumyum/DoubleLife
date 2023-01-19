@@ -35,6 +35,8 @@ public final class DoubleLife extends JavaPlugin {
 
     public static Collection<NamespacedKey> recipeKeys;
 
+    int configVersion = 2;
+
     public void createRecipes(){
 
         if (plugin.getConfig().getBoolean("recipes.craftable-saddle")) {
@@ -119,6 +121,11 @@ public final class DoubleLife extends JavaPlugin {
                 getLogger().severe("You may download it here: https://modrinth.com/plugin/double-life");
             }
         });
+
+        if (getConfig().getInt("config-version") != configVersion) {
+            getLogger().warning("Your configuration file is " + (this.configVersion - getConfig().getInt("config-version")) + " version(s) behind!");
+            getLogger().warning("To be able to access the newly added settings, please delete the current config.yml file and restart/reload the server!");
+        }
     }
 
     public class mainCommandExecutor implements CommandExecutor {
