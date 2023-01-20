@@ -6,6 +6,9 @@ You start off with three lives, and you're only allowed to kill people when you'
 I recommend that you watch this video if you've never heard of the game before.   
 https://www.youtube.com/watch?v=UwFbtE4YS7g&ab_channel=Grian   
 
+The plugin is versioned using Semantic Versioning. https://semver.org/
+(MAJOR.MINOR.PATCH)
+
 ### ARR License
 © 2022 RowwYourBoat. All Rights Reserved.  
 Only allowed for personal use. Modification, distribution and commercial use are forbidden!
