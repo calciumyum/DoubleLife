@@ -45,7 +45,7 @@ items:
 #### You may change this here if you'd like.
 enchantments:
   enchantment-table-craftable: false
-  enchantment-table-breakable: false
+  enchantment-table-breakable: true
   bookshelves-craftable: false
 
   ## Enabling this setting will make all dropped Enchantment Tables unbreakable when dropped as an item.
@@ -96,10 +96,10 @@ misc:
   ## If your soulmate dies while you're offline,
   ## you will be killed by the plugin upon rejoining
   ## when this setting is enabled.
-  kill-soulmate-on-join-if-offline-during-death: false
+  kill-soulmate-on-join-if-offline-during-death: true
 
   ## Will only be applied when running the '/dl setup' command!
-  border-size: 700.0
+  border-size: 800.0
 
   ## Kills all existing villagers and prevents new ones from spawning when enabled.
-  kill-villagers: false
+  kill-villagers: true
